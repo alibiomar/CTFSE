@@ -13,7 +13,7 @@ export default function Home() {
               alt="Securinets ENIT Logo"
               width={180}
               height={180}
-              className="mx-auto mb-4 transition-transform duration-500 repeat-infinite group-hover:scale-110 group-hover:rotate-3"
+              className="mx-auto mb-4 transition-transform duration-500 repeat-infinite group-hover:scale-105 group-hover:rotate-1"
             />
             <div className="absolute inset-0 mx-auto w-48 h-48 blur-2xl bg-[#29ED00]/20 -z-10 group-hover:bg-[#C400ED]/30 transition-colors duration-500" />
           </div>
@@ -22,13 +22,10 @@ export default function Home() {
             <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#29ED00] to-[#C400ED] tracking-tighter">
               <TerminalEffect text="SECURINETS ENIT" delay={500} />
             </h1>
-            <p className="text-2xl text-gray-300 font-mono">
-              <TerminalEffect text="CYBERSECURITY CLUB" delay={2000} />
-            </p>
             <div className="text-[#29ED00] text-sm font-mono opacity-80">
               <TerminalEffect
                 text="[root@enit ~]$ ./init_registration_portal.sh"
-                delay={3500}
+                delay={1000}
                 typingSpeed={50}
               />
             </div>
@@ -48,10 +45,9 @@ export default function Home() {
         <footer className="mt-8 text-center">
           <p className="text-sm font-mono text-transparent bg-gradient-to-r from-[#29ED00] to-[#C400ED] bg-clip-text animate-pulse">
             &lt;secure encrypted channel&gt; 
+
             <span className="mx-2">▮</span>
-            EST. 2025
-            <span className="mx-2">▮</span>
-            ENIT 
+            ENIT 2025
             <span className="mx-2">▮</span>
             &lt;/channel&gt;
           </p>
