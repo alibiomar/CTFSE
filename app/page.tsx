@@ -39,7 +39,7 @@ export default function Home() {
           <div className="absolute -inset-2 bg-gradient-to-r from-[#29ED00] to-[#C400ED] rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-300 animate-pulse" />
           <div className="relative bg-gradient-to-br from-black to-gray-900 border-2 border-[#29ED00]/20 rounded-2xl p-1 overflow-hidden">
             <div className="absolute inset-0 bg-[url('/circuit-board.svg')] opacity-10" />
-            <div className="relative bg-gray-900/80 backdrop-blur-sm rounded-xl p-6 lg:p-8">
+            <div className="relative bg-black backdrop-blur-sm rounded-xl p-6 lg:p-8">
               <RegistrationForm />
             </div>
           </div>

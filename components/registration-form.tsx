@@ -142,7 +142,7 @@ export default function RegistrationForm() {
 
   if (existingProfile) {
     return (
-      <div className="space-y-6 bg-gradient-to-br from-gray-900/80 to-gray-800/80 p-8 rounded-xl border-2 border-[#29ED00]/20 shadow-2xl shadow-[#C400ED]/10 max-w-2xl mx-auto">
+      <div className="space-y-6 bg-black p-8 rounded-xl border-2 border-[#29ED00]/20 shadow-2xl shadow-[#C400ED]/10 max-w-2xl mx-auto">
         <div className="flex flex-col items-center text-center space-y-4">
           <div className="p-4 bg-[#29ED00]/10 rounded-full border border-[#29ED00]/30">
             <UserCheck size={32} className="text-[#29ED00] animate-pulse" />
@@ -206,7 +206,7 @@ export default function RegistrationForm() {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 required
-                className="pl-10 bg-gray-800/50 border-gray-700 focus:border-[#29ED00] focus:ring-1 focus:ring-[#29ED00]"
+                className="pl-10 bg-black border-gray-700 focus:border-[#29ED00] focus:ring-1 focus:ring-[#29ED00]"
                 placeholder="John Doe"
               />
               <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
@@ -225,7 +225,7 @@ export default function RegistrationForm() {
                 onChange={(e) => setEmail(e.target.value)}
                 onBlur={handleEmailBlur}
                 required
-                className="pl-10 bg-gray-800/50 border-gray-700 focus:border-[#29ED00] focus:ring-1 focus:ring-[#29ED00]"
+                className="pl-10 bg-black border-gray-700 focus:border-[#29ED00] focus:ring-1 focus:ring-[#29ED00]"
                 placeholder="your@email.com"
               />
               <MailIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
@@ -249,7 +249,7 @@ export default function RegistrationForm() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
-                className="pl-10 bg-gray-800/50 border-gray-700 focus:border-[#29ED00] focus:ring-1 focus:ring-[#29ED00]"
+                className="pl-10 bg-black border-gray-700 focus:border-[#29ED00] focus:ring-1 focus:ring-[#29ED00]"
                 placeholder="••••••••••••"
               />
               <LockIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
@@ -267,7 +267,7 @@ export default function RegistrationForm() {
                 type="text"
                 value={university}
                 onChange={(e) => setUniversity(e.target.value)}
-                className="pl-10 bg-gray-800/50 border-gray-700 focus:border-[#29ED00] focus:ring-1 focus:ring-[#29ED00]"
+                className="pl-10 bg-black border-gray-700 focus:border-[#29ED00] focus:ring-1 focus:ring-[#29ED00]"
                 placeholder="ENIT, INSAT, FST, etc."
               />
               <BuildingIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
@@ -296,7 +296,7 @@ export default function RegistrationForm() {
                 type="tel"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
-                className="pl-10 bg-gray-800/50 border-gray-700 focus:border-[#29ED00] focus:ring-1 focus:ring-[#29ED00]"
+                className="pl-10 bg-black border-gray-700 focus:border-[#29ED00] focus:ring-1 focus:ring-[#29ED00]"
                 placeholder="+216 XX XXX XXX"
               />
               <PhoneIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
@@ -313,7 +313,7 @@ export default function RegistrationForm() {
                 type="url"
                 value={facebookUrl}
                 onChange={(e) => setFacebookUrl(e.target.value)}
-                className="pl-10 bg-gray-800/50 border-gray-700 focus:border-[#29ED00] focus:ring-1 focus:ring-[#29ED00]"
+                className="pl-10 bg-black border-gray-700 focus:border-[#29ED00] focus:ring-1 focus:ring-[#29ED00]"
                 placeholder="https://facebook.com/username"
               />
               <UsersIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
