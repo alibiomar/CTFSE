@@ -154,49 +154,7 @@ export default function RegistrationForm() {
               <p>{existingProfile.email}</p>
             </div>
           </div>
-          {existingProfile.phone_number && (
-            <div className="flex items-start gap-2">
-              <PhoneIcon size={16} className="mt-1 text-[#29ED00]" />
-              <div>
-                <p className="text-xs text-gray-500">Phone Number</p>
-                <p>{existingProfile.phone_number}</p>
-              </div>
-            </div>
-          )}
-          {existingProfile.facebook_url && (
-            <div className="flex items-start gap-2">
-              <GlobeIcon size={16} className="mt-1 text-[#29ED00]" />
-              <div>
-                <p className="text-xs text-gray-500">Facebook URL</p>
-                <p>{existingProfile.facebook_url}</p>
-              </div>
-            </div>
-          )}
-          {existingProfile.university && (
-            <div className="flex items-start gap-2">
-              <BuildingIcon size={16} className="mt-1 text-[#29ED00]" />
-              <div>
-                <p className="text-xs text-gray-500">University</p>
-                <p>{existingProfile.university}</p>
-              </div>
-            </div>
-          )}
-          <div className="flex items-start gap-2">
-            <ShieldIcon size={16} className="mt-1 text-[#29ED00]" />
-            <div>
-              <p className="text-xs text-gray-500">CTF Experience</p>
-              <p>{existingProfile.ctf_experience ? "Yes" : "No"}</p>
-            </div>
-          </div>
-          {existingProfile.team_preference && (
-            <div className="flex items-start gap-2">
-              <UsersIcon size={16} className="mt-1 text-[#29ED00]" />
-              <div>
-                <p className="text-xs text-gray-500">Participation Preference</p>
-                <p className="capitalize">{existingProfile.team_preference}</p>
-              </div>
-            </div>
-          )}
+
         </div>
         <Button
           onClick={() => {
