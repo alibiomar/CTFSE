@@ -123,24 +123,7 @@ export default function GlitchLogo({
         />
       ))}
       
-      {/* Occasional vertical displacement of sections */}
-      {glitchState === 2 && (
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute inset-0 top-1/3 h-10" style={{ 
-            transform: 'translateX(2px)',
-            clipPath: 'inset(0 0 0 0)'
-          }}>
-            <Image
-              src={src}
-              alt=""
-              width={width}
-              height={height}
-              className={className}
-              style={{ marginTop: '-33%' }}
-            />
-          </div>
-        </div>
-      )}
+
     </div>
   );
 }
