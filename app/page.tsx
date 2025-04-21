@@ -1,11 +1,18 @@
 import RegistrationForm from "@/components/registration-form"
 import TerminalEffect from "@/components/terminal-effect"
-
+import Image from "next/image"
 export default function Home() {
   return (
     <main className="min-h-screen bg-black flex flex-col items-center justify-center p-4 sm:p-6">
       <div className="w-full max-w-lg">
         <div className="mb-8 text-center">
+          <Image
+            src="/logo.png"
+            alt="Securinets ENIT Logo"
+            width={150}
+            height={150}
+            className="mx-auto mb-4"
+          />
           <h1 className="text-4xl font-bold mb-2 text-[#29ED00] tracking-tight">
             <TerminalEffect text="SECURINETS ENIT" />
           </h1>
