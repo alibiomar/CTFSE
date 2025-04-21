@@ -1,7 +1,6 @@
 "use server"
 
 import { createServerSupabaseClient } from "@/lib/supabase"
-import { cookies } from "next/headers"
 
 export async function checkEmailExists(email: string) {
   try {
@@ -37,6 +36,7 @@ export async function registerUser(formData: FormData) {
     const university = formData.get("university") as string
     const ctfExperience = formData.get("ctfExperience") === "yes"
     const teamPreference = formData.get("teamPreference") as string
+    const participationMode = formData.get("participationMode") as string
 
     // Validate inputs
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -98,6 +98,7 @@ export async function registerUser(formData: FormData) {
         university: normalizedUniversity,
         ctf_experience: ctfExperience,
         team_preference: teamPreference as "solo" | "team",
+        participation_mode: participationMode as "online" | "on-site",
         is_admin: false,
       },
     ])

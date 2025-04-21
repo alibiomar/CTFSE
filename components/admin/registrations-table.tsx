@@ -17,6 +17,7 @@ type Registration = {
   university: string
   ctf_experience: boolean
   team_preference: string
+  participation_mode: string
   created_at: string
 }
 
@@ -41,7 +42,7 @@ export default function RegistrationsTable() {
       // Apply search if provided
       if (searchQuery) {
         query = query.or(
-          `full_name.ilike.%${searchQuery}%,email.ilike.%${searchQuery}%,university.ilike.%${searchQuery}%`,
+          `full_name.ilike.%${searchQuery}%,email.ilike.%${searchQuery}%,university.ilike.%${searchQuery}%,participation_mode.ilike.%${searchQuery}%`,
         )
       }
 
@@ -50,10 +51,13 @@ export default function RegistrationsTable() {
 
       const { data, error } = await query
 
-
+      if (error) {
+        console.error("Error fetching registrations:", error)
+      }
 
       setRegistrations(data || [])
     } catch (error) {
+      console.error("Error fetching registrations:", error)
     } finally {
       setLoading(false)
     }
@@ -92,6 +96,7 @@ export default function RegistrationsTable() {
         "University",
         "CTF Experience",
         "Team Preference",
+        "Participation Mode",
         "Registration Date",
       ]
 
@@ -106,6 +111,7 @@ export default function RegistrationsTable() {
             `"${reg.university || ""}"`,
             reg.ctf_experience ? "Yes" : "No",
             reg.team_preference === "team" ? "Team" : "Solo",
+            reg.participation_mode === "online" ? "Online" : "Onsite",
             new Date(reg.created_at).toLocaleString(),
           ].join(","),
         ),
@@ -146,7 +152,7 @@ export default function RegistrationsTable() {
       <div className="relative mb-8">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
         <Input
-          placeholder="Search by name, email, or university..."
+          placeholder="Search by name, email, university, or participation mode..."
           className="pl-10 bg-gray-800 border-gray-700 text-white"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -223,6 +229,17 @@ export default function RegistrationsTable() {
                       ))}
                   </div>
                 </th>
+                <th className="px-4 py-3 text-left cursor-pointer" onClick={() => handleSort("participation_mode")}>
+                  <div className="flex items-center">
+                    <span>Mode</span>
+                    {sortBy === "participation_mode" &&
+                      (sortOrder === "asc" ? (
+                        <ChevronUp className="ml-1 h-4 w-4" />
+                      ) : (
+                        <ChevronDown className="ml-1 h-4 w-4" />
+                      ))}
+                  </div>
+                </th>
                 <th className="px-4 py-3 text-left cursor-pointer" onClick={() => handleSort("created_at")}>
                   <div className="flex items-center">
                     <span>Registered</span>
@@ -240,7 +257,7 @@ export default function RegistrationsTable() {
             <tbody className="bg-black">
               {loading ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-8 text-center text-gray-400">
+                  <td colSpan={8} className="px-4 py-8 text-center text-gray-400">
                     <div className="flex flex-col items-center">
                       <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#29ED00] mb-2"></div>
                       <span>Loading registrations...</span>
@@ -249,7 +266,7 @@ export default function RegistrationsTable() {
                 </tr>
               ) : registrations.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-8 text-center text-gray-400">
+                  <td colSpan={8} className="px-4 py-8 text-center text-gray-400">
                     <UserCheck className="h-12 w-12 mx-auto mb-4 text-[#29ED00]" />
                     <p>No registrations found</p>
                     {searchQuery && <p className="mt-2 text-sm">Try adjusting your search query</p>}
@@ -279,6 +296,17 @@ export default function RegistrationsTable() {
                         }
                       >
                         {reg.team_preference === "team" ? "Team" : "Solo"}
+                      </Badge>
+                    </td>
+                    <td className="px-4 py-3">
+                      <Badge
+                        className={
+                          reg.participation_mode === "online"
+                            ? "bg-[#29ED00]/20 text-[#29ED00] hover:bg-[#29ED00]/30"
+                            : "bg-[#C400ED]/20 text-[#C400ED] hover:bg-[#C400ED]/30"
+                        }
+                      >
+                        {reg.participation_mode === "online" ? "Online" : "Onsite"}
                       </Badge>
                     </td>
                     <td className="px-4 py-3 text-gray-400">{new Date(reg.created_at).toLocaleDateString()}</td>
@@ -313,29 +341,33 @@ export default function RegistrationsTable() {
 
                               <div>
                                 <p className="text-xs text-gray-400">Phone Number</p>
-                                <p className="text-white">{selectedRegistration.phone_number}</p>
+                                <p className="text-white">{selectedRegistration.phone_number || "N/A"}</p>
                               </div>
 
                               <div>
                                 <p className="text-xs text-gray-400">Facebook URL</p>
                                 <p className="text-white">
-                                  <a
-                                    href={selectedRegistration.facebook_url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-[#C400ED] hover:underline"
-                                  >
-                                    {selectedRegistration.facebook_url}
-                                  </a>
+                                  {selectedRegistration.facebook_url ? (
+                                    <a
+                                      href={selectedRegistration.facebook_url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-[#C400ED] hover:underline"
+                                    >
+                                      {selectedRegistration.facebook_url}
+                                    </a>
+                                  ) : (
+                                    "N/A"
+                                  )}
                                 </p>
                               </div>
 
                               <div>
                                 <p className="text-xs text-gray-400">University</p>
-                                <p className="text-white">{selectedRegistration.university}</p>
+                                <p className="text-white">{selectedRegistration.university || "N/A"}</p>
                               </div>
 
-                              <div className="grid grid-cols-2 gap-4">
+                              <div className="grid grid-cols-3 gap-4">
                                 <div>
                                   <p className="text-xs text-gray-400">CTF Experience</p>
                                   <Badge
@@ -358,6 +390,18 @@ export default function RegistrationsTable() {
                                     }
                                   >
                                     {selectedRegistration.team_preference === "team" ? "Team" : "Solo"}
+                                  </Badge>
+                                </div>
+                                <div>
+                                  <p className="text-xs text-gray-400">Participation Mode</p>
+                                  <Badge
+                                    className={
+                                      selectedRegistration.participation_mode === "online"
+                                        ? "bg-[#29ED00]/20 text-[#29ED00]"
+                                        : "bg-[#C400ED]/20 text-[#C400ED]"
+                                    }
+                                  >
+                                    {selectedRegistration.participation_mode === "online" ? "Online" : "Onsite"}
                                   </Badge>
                                 </div>
                               </div>

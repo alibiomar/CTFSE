@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Users, Shield, User, UsersRound } from "lucide-react"
+import { Users, Shield, User, UsersRound, Monitor } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { getSupabaseBrowser } from "@/lib/supabase-browser"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -12,6 +12,8 @@ export default function DashboardStats() {
     withCtfExperience: 0,
     soloPreference: 0,
     teamPreference: 0,
+    onlineParticipation: 0,
+    onsiteParticipation: 0,
   })
   interface Profile {
     id: string
@@ -19,6 +21,7 @@ export default function DashboardStats() {
     email: string | null
     ctf_experience: boolean
     team_preference: string | null
+    participation_mode: string | null
   }
   const [profiles, setProfiles] = useState<Profile[]>([])
   const [loading, setLoading] = useState(true)
@@ -36,9 +39,14 @@ export default function DashboardStats() {
         // Get team preference counts
         const { data: teamData } = await supabase.from("profiles").select("team_preference")
 
+        // Get participation mode counts
+        const { data: participationData } = await supabase.from("profiles").select("participation_mode")
+
         // Get all profiles data
-        const { data: profilesData, error } = await supabase.from("profiles").select("*")
-        
+        const { data: profilesData, error } = await supabase
+          .from("profiles")
+          .select("id, full_name, email, ctf_experience, team_preference, participation_mode")
+
         if (error) {
           console.error("Error fetching profiles:", error)
         } else {
@@ -48,12 +56,16 @@ export default function DashboardStats() {
         const withCtfExperience = ctfData?.length || 0
         const soloPreference = teamData?.filter((item) => item.team_preference === "solo").length || 0
         const teamPreference = teamData?.filter((item) => item.team_preference === "team").length || 0
+        const onlineParticipation = participationData?.filter((item) => item.participation_mode === "online").length || 0
+        const onsiteParticipation = participationData?.filter((item) => item.participation_mode === "onsite").length || 0
 
         setStats({
           totalRegistrations: totalCount || 0,
           withCtfExperience,
           soloPreference,
           teamPreference,
+          onlineParticipation,
+          onsiteParticipation,
         })
       } catch (error) {
         console.error("Error fetching data:", error)
@@ -69,7 +81,7 @@ export default function DashboardStats() {
     return (
       <div className="space-y-6">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {[...Array(4)].map((_, i) => (
+          {[...Array(6)].map((_, i) => (
             <Card key={i} className="bg-gray-900 border-gray-800">
               <CardHeader className="pb-2">
                 <div className="h-5 w-24 bg-gray-800 rounded animate-pulse"></div>
@@ -98,7 +110,7 @@ export default function DashboardStats() {
 
   return (
     <div className="space-y-8">
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <Card className="bg-gray-900 border-gray-800">
           <CardHeader className="pb-2">
             <CardTitle className="text-gray-200 text-lg">Total Registrations</CardTitle>
@@ -150,9 +162,34 @@ export default function DashboardStats() {
             </div>
           </CardContent>
         </Card>
+
+        <Card className="bg-gray-900 border-gray-800">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-gray-200 text-lg">Online Participation</CardTitle>
+            <CardDescription className="text-gray-400">Participants choosing online</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center">
+              <Monitor className="h-10 w-10 text-[#29ED00] mr-4" />
+              <div className="text-3xl font-bold text-white">{stats.onlineParticipation}</div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gray-900 border-gray-800">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-gray-200 text-lg">Onsite Participation</CardTitle>
+            <CardDescription className="text-gray-400">Participants choosing onsite</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center">
+              <Monitor className="h-10 w-10 text-[#C400ED] mr-4" />
+              <div className="text-3xl font-bold text-white">{stats.onsiteParticipation}</div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
-      {/* Profiles Table */}
       <Card className="bg-gray-900 border-gray-800">
         <CardHeader>
           <CardTitle className="text-gray-200 text-xl">Registered Profiles</CardTitle>
@@ -163,10 +200,11 @@ export default function DashboardStats() {
             <TableHeader>
               <TableRow className="border-gray-800 hover:bg-gray-800/50">
                 <TableHead className="text-gray-400">ID</TableHead>
-                <TableHead className="text-gray-400">full_name</TableHead>
+                <TableHead className="text-gray-400">Full Name</TableHead>
                 <TableHead className="text-gray-400">Email</TableHead>
                 <TableHead className="text-gray-400">CTF Experience</TableHead>
                 <TableHead className="text-gray-400">Team Preference</TableHead>
+                <TableHead className="text-gray-400">Participation Mode</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -182,11 +220,14 @@ export default function DashboardStats() {
                     <TableCell className="text-gray-300 capitalize">
                       {profile.team_preference || "N/A"}
                     </TableCell>
+                    <TableCell className="text-gray-300 capitalize">
+                      {profile.participation_mode || "N/A"}
+                    </TableCell>
                   </TableRow>
                 ))
               ) : (
                 <TableRow className="border-gray-800">
-                  <TableCell colSpan={5} className="text-center text-gray-400 py-4">
+                  <TableCell colSpan={6} className="text-center text-gray-400 py-4">
                     No profiles found
                   </TableCell>
                 </TableRow>

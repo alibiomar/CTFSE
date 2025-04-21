@@ -15,6 +15,8 @@ import {
   BuildingIcon,
   UsersIcon,
   UserCheck,
+  MonitorIcon,
+  MapPinIcon,
 } from "lucide-react"
 import { registerUser, checkEmailExists } from "@/app/actions"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
@@ -28,6 +30,7 @@ export default function RegistrationForm() {
   const [university, setUniversity] = useState("")
   const [ctfExperience, setCtfExperience] = useState("no")
   const [teamPreference, setTeamPreference] = useState("solo")
+  const [participationMode, setParticipationMode] = useState("on-site")
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<{ text: string; type: "error" | "success" } | null>(null)
   const [existingProfile, setExistingProfile] = useState<any>(null)
@@ -90,6 +93,7 @@ export default function RegistrationForm() {
       formData.append("university", university)
       formData.append("ctfExperience", ctfExperience)
       formData.append("teamPreference", teamPreference)
+      formData.append("participationMode", participationMode)
 
       const result = await registerUser(formData)
 
@@ -106,6 +110,7 @@ export default function RegistrationForm() {
         setUniversity("")
         setCtfExperience("no")
         setTeamPreference("solo")
+        setParticipationMode("online")
       } else {
         if (result.alreadyRegistered && result.profile) {
           setExistingProfile(result.profile)
@@ -154,7 +159,6 @@ export default function RegistrationForm() {
               <p>{existingProfile.email}</p>
             </div>
           </div>
-
         </div>
         <Button
           onClick={() => {
@@ -323,6 +327,28 @@ export default function RegistrationForm() {
           </div>
         </RadioGroup>
       </div>
+      <div className="space-y-1">
+        <Label className="text-[#29ED00]">
+          <span className="flex items-center gap-2">
+            <MonitorIcon size={16} />
+            How would you like to participate?
+          </span>
+        </Label>
+        <RadioGroup
+          value={participationMode}
+          onValueChange={setParticipationMode}
+          className="flex gap-4 pt-2"
+        >
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="online" id="mode-online" className="border-[#29ED00]" />
+            <Label htmlFor="mode-online" className="text-white">Online</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="onsite" id="mode-onsite" className="border-[#29ED00]" />
+            <Label htmlFor="mode-onsite" className="text-white">On-site</Label>
+          </div>
+        </RadioGroup>
+      </div>
       {message && !existingProfile && (
         <div
           className={`p-3 rounded text-sm ${
@@ -341,7 +367,7 @@ export default function RegistrationForm() {
       >
         {loading ? (
           <span className="flex items-center gap-2">
-            <span className="animate-pulse">Processing</span>
+            <span className="animate Pulse">Processing</span>
             <span className="inline-block animate-spin">⟳</span>
           </span>
         ) : (
