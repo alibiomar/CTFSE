@@ -1,22 +1,21 @@
 "use client"
 
-import type React from "react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Loader2 } from "lucide-react"
 import {
-  LockIcon,
   UserIcon,
   MailIcon,
-  ShieldIcon,
+  LockIcon,
   PhoneIcon,
-  GlobeIcon,
-  BuildingIcon,
   UsersIcon,
-  UserCheck,
+  BuildingIcon,
+  ShieldIcon,
+  GlobeIcon,
   MonitorIcon,
-  MapPinIcon,
+  UserCheck,
 } from "lucide-react"
 import { registerUser, checkEmailExists } from "@/app/actions"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
@@ -30,7 +29,7 @@ export default function RegistrationForm() {
   const [university, setUniversity] = useState("")
   const [ctfExperience, setCtfExperience] = useState("no")
   const [teamPreference, setTeamPreference] = useState("solo")
-  const [participationMode, setParticipationMode] = useState("on-site")
+  const [participationMode, setParticipationMode] = useState("online")
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<{ text: string; type: "error" | "success" } | null>(null)
   const [existingProfile, setExistingProfile] = useState<any>(null)
@@ -39,31 +38,36 @@ export default function RegistrationForm() {
   const handleEmailBlur = async () => {
     if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setCheckingEmail(true)
-      const result = await checkEmailExists(email)
-      setCheckingEmail(false)
-      if (result.exists) {
-        setExistingProfile(result.profile)
-        setMessage({ text: "You are already registered with this email.", type: "error" })
-      } else {
-        setExistingProfile(null)
-        setMessage(null)
+      try {
+        const result = await checkEmailExists(email)
+        if (result.exists) {
+          setExistingProfile(result.profile)
+          setMessage({ text: "You are already registered with this email.", type: "error" })
+        } else {
+          setExistingProfile(null)
+          setMessage(null)
+        }
+      } catch (error) {
+        setMessage({ text: "Error checking email availability", type: "error" })
+      } finally {
+        setCheckingEmail(false)
       }
     }
   }
 
-  async function handleSignUp(e: React.FormEvent) {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setMessage(null)
 
-    // Client-side validation
-    if (!fullName) {
+    // Validation
+    if (!fullName.trim()) {
       setMessage({ text: "Full name is required", type: "error" })
       setLoading(false)
       return
     }
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setMessage({ text: "Invalid email address", type: "error" })
+      setMessage({ text: "Valid email is required", type: "error" })
       setLoading(false)
       return
     }
@@ -73,12 +77,12 @@ export default function RegistrationForm() {
       return
     }
     if (phoneNumber && !/^\+?\d{8,}$/.test(phoneNumber)) {
-      setMessage({ text: "Invalid phone number", type: "error" })
+      setMessage({ text: "Invalid phone number format", type: "error" })
       setLoading(false)
       return
     }
     if (facebookUrl && !/^https?:\/\/(www\.)?facebook\.com\/.+$/.test(facebookUrl)) {
-      setMessage({ text: "Invalid Facebook URL", type: "error" })
+      setMessage({ text: "Please enter a valid Facebook URL", type: "error" })
       setLoading(false)
       return
     }
@@ -99,9 +103,10 @@ export default function RegistrationForm() {
 
       if (result.success) {
         setMessage({
-          text: result.message || "Registration successful! Check your email for confirmation.",
+          text: result.message || "Registration successful! Check your email.",
           type: "success",
         })
+        // Reset form
         setEmail("")
         setPassword("")
         setFullName("")
@@ -112,10 +117,10 @@ export default function RegistrationForm() {
         setTeamPreference("solo")
         setParticipationMode("online")
       } else {
-        if (result.alreadyRegistered && result.profile) {
+        if (result.alreadyRegistered) {
           setExistingProfile(result.profile)
           setMessage({
-            text: "You are already registered with the following information:",
+            text: "You are already registered with this email",
             type: "error",
           })
         } else {
@@ -127,7 +132,7 @@ export default function RegistrationForm() {
       }
     } catch (error: any) {
       setMessage({
-        text: error.message || "An unexpected error occurred. Please try again.",
+        text: error.message || "An unexpected error occurred",
         type: "error",
       })
     } finally {
@@ -137,249 +142,328 @@ export default function RegistrationForm() {
 
   if (existingProfile) {
     return (
-      <div className="space-y-4 bg-gray-900/50 p-6 rounded-lg border border-[#29ED00]/30">
-        <div className="flex items-center justify-center mb-4">
-          <div className="bg-red-500/20 p-3 rounded-full">
-            <UserCheck size={24} className="text-[#29ED00]" />
+      <div className="space-y-6 bg-gradient-to-br from-gray-900/80 to-gray-800/80 p-8 rounded-xl border-2 border-[#29ED00]/20 shadow-2xl shadow-[#C400ED]/10 max-w-2xl mx-auto">
+        <div className="flex flex-col items-center text-center space-y-4">
+          <div className="p-4 bg-[#29ED00]/10 rounded-full border border-[#29ED00]/30">
+            <UserCheck size={32} className="text-[#29ED00] animate-pulse" />
           </div>
+          <h3 className="text-2xl font-bold bg-gradient-to-r from-[#29ED00] to-[#C400ED] bg-clip-text text-transparent">
+            Already Registered
+          </h3>
         </div>
-        <h3 className="text-xl font-bold text-center text-[#C400ED] mb-4">Already Registered</h3>
-        <div className="space-y-3 text-gray-300">
-          <div className="flex items-start gap-2">
-            <UserIcon size={16} className="mt-1 text-[#29ED00]" />
+        
+        <div className="space-y-4 text-gray-300">
+          <div className="flex items-start gap-3 p-3 bg-gray-800/30 rounded-lg">
+            <UserIcon size={20} className="flex-shrink-0 mt-1 text-[#29ED00]" />
             <div>
-              <p className="text-xs text-gray-500">Full Name</p>
-              <p>{existingProfile.full_name}</p>
+              <p className="text-sm font-medium text-[#29ED00]">Full Name</p>
+              <p className="text-base">{existingProfile.full_name}</p>
             </div>
           </div>
-          <div className="flex items-start gap-2">
-            <MailIcon size={16} className="mt-1 text-[#29ED00]" />
+          <div className="flex items-start gap-3 p-3 bg-gray-800/30 rounded-lg">
+            <MailIcon size={20} className="flex-shrink-0 mt-1 text-[#29ED00]" />
             <div>
-              <p className="text-xs text-gray-500">Email</p>
-              <p>{existingProfile.email}</p>
+              <p className="text-sm font-medium text-[#29ED00]">Email</p>
+              <p className="text-base">{existingProfile.email}</p>
             </div>
           </div>
         </div>
+
         <Button
           onClick={() => {
             setExistingProfile(null)
             setMessage(null)
             setEmail("")
           }}
-          className="w-full mt-4 bg-[#C400ED] hover:bg-[#C400ED]/80 text-white"
+          className="w-full bg-[#C400ED] hover:bg-[#C400ED]/90 transition-transform duration-200 hover:scale-[1.02]"
         >
-          Register with a different email
+          Use Different Email
         </Button>
       </div>
     )
   }
 
   return (
-    <form onSubmit={handleSignUp} className="space-y-4">
-      <div className="space-y-1">
-        <Label htmlFor="fullName" className="text-[#29ED00]">
-          <span className="flex items-center gap-2">
-            <UserIcon size={16} />
-            Full Name
-          </span>
-        </Label>
-        <Input
-          id="fullName"
-          type="text"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          required
-          className="bg-gray-900 border-gray-800 text-white pl-3 focus:border-[#C400ED] focus:ring-[#C400ED]"
-          placeholder="John Doe"
-        />
-      </div>
-      <div className="space-y-1">
-        <Label htmlFor="email" className="text-[#29ED00]">
-          <span className="flex items-center gap-2">
-            <MailIcon size={16} />
-            Email
-          </span>
-        </Label>
-        <div className="relative">
-          <Input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            onBlur={handleEmailBlur}
-            required
-            className="bg-gray-900 border-gray-800 text-white pl-3 focus:border-[#C400ED] focus:ring-[#C400ED]"
-            placeholder="your@email.com"
-          />
-          {checkingEmail && (
-            <span className="text-xs text-gray-400 mt-1 animate-pulse">Checking email...</span>
-          )}
+    <form onSubmit={handleSubmit} className="space-y-8 max-w-2xl mx-auto">
+      {/* Personal Information Section */}
+      <div className="space-y-6 p-6 bg-gray-900/50 rounded-xl border border-[#29ED00]/10">
+        <div className="flex items-center gap-3 mb-4">
+          <UserIcon className="text-[#29ED00]" size={24} />
+          <h2 className="text-xl font-bold bg-gradient-to-r from-[#29ED00] to-[#C400ED] bg-clip-text text-transparent">
+            Personal Information
+          </h2>
+        </div>
+        
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="space-y-2">
+            <Label htmlFor="fullName" className="text-gray-400">
+              Full Name *
+            </Label>
+            <div className="relative">
+              <Input
+                id="fullName"
+                type="text"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                required
+                className="pl-10 bg-gray-800/50 border-gray-700 focus:border-[#29ED00] focus:ring-1 focus:ring-[#29ED00]"
+                placeholder="John Doe"
+              />
+              <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="email" className="text-gray-400">
+              Email *
+            </Label>
+            <div className="relative">
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onBlur={handleEmailBlur}
+                required
+                className="pl-10 bg-gray-800/50 border-gray-700 focus:border-[#29ED00] focus:ring-1 focus:ring-[#29ED00]"
+                placeholder="your@email.com"
+              />
+              <MailIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+              {checkingEmail && (
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 animate-pulse">
+                  Checking...
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="password" className="text-gray-400">
+              Password *
+            </Label>
+            <div className="relative">
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={6}
+                className="pl-10 bg-gray-800/50 border-gray-700 focus:border-[#29ED00] focus:ring-1 focus:ring-[#29ED00]"
+                placeholder="••••••••••••"
+              />
+              <LockIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+            </div>
+            <p className="text-xs text-gray-500">Minimum 6 characters</p>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="university" className="text-gray-400">
+              University
+            </Label>
+            <div className="relative">
+              <Input
+                id="university"
+                type="text"
+                value={university}
+                onChange={(e) => setUniversity(e.target.value)}
+                className="pl-10 bg-gray-800/50 border-gray-700 focus:border-[#29ED00] focus:ring-1 focus:ring-[#29ED00]"
+                placeholder="ENIT, INSAT, FST, etc."
+              />
+              <BuildingIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+            </div>
+          </div>
         </div>
       </div>
-      <div className="space-y-1">
-        <Label htmlFor="password" className="text-[#29ED00]">
-          <span className="flex items-center gap-2">
-            <LockIcon size={16} />
-            Password
-          </span>
-        </Label>
-        <Input
-          id="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          minLength={6}
-          className="bg-gray-900 border-gray-800 text-white pl-3 focus:border-[#C400ED] focus:ring-[#C400ED]"
-          placeholder="••••••••••••"
-        />
-        <p className="text-xs text-gray-500 mt-1">Password must be at least 6 characters</p>
-      </div>
-      <div className="space-y-1">
-        <Label htmlFor="phoneNumber" className="text-[#29ED00]">
-          <span className="flex items-center gap-2">
-            <PhoneIcon size={16} />
-            Phone Number (Optional)
-          </span>
-        </Label>
-        <Input
-          id="phoneNumber"
-          type="tel"
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
-          className="bg-gray-900 border-gray-800 text-white pl-3 focus:border-[#C400ED] focus:ring-[#C400ED]"
-          placeholder="+216 XX XXX XXX"
-        />
-      </div>
-      <div className="space-y-1">
-        <Label htmlFor="facebookUrl" className="text-[#29ED00]">
-          <span className="flex items-center gap-2">
-            <GlobeIcon size={16} />
-            Facebook URL (Optional)
-          </span>
-        </Label>
-        <Input
-          id="facebookUrl"
-          type="url"
-          value={facebookUrl}
-          onChange={(e) => setFacebookUrl(e.target.value)}
-          className="bg-gray-900 border-gray-800 text-white pl-3 focus:border-[#C400ED] focus:ring-[#C400ED]"
-          placeholder="https://facebook.com/yourusername"
-        />
-      </div>
-      <div className="space-y-1">
-        <Label htmlFor="university" className="text-[#29ED00]">
-          <span className="flex items-center gap-2">
-            <BuildingIcon size={16} />
-            University (Optional)
-          </span>
-        </Label>
-        <Input
-          id="university"
-          type="text"
-          value={university}
-          onChange={(e) => setUniversity(e.target.value)}
-          className="bg-gray-900 border-gray-800 text-white pl-3 focus:border-[#C400ED] focus:ring-[#C400ED]"
-          placeholder="ENIT, INSAT, FST, TEK-UP, etc."
-        />
-      </div>
-      <div className="space-y-1">
-        <Label className="text-[#29ED00]">
-          <span className="flex items-center gap-2">
-            <ShieldIcon size={16} />
-            Have you participated in CTF competitions before?
-          </span>
-        </Label>
-        <RadioGroup
-          value={ctfExperience}
-          onValueChange={setCtfExperience}
-          className="flex gap-4 pt-2"
-        >
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="yes" id="ctf-yes" className="border-[#29ED00]" />
-            <Label htmlFor="ctf-yes" className="text-white">Yes</Label>
+
+      {/* Contact Information Section */}
+      <div className="space-y-6 p-6 bg-gray-900/50 rounded-xl border border-[#29ED00]/10">
+        <div className="flex items-center gap-3 mb-4">
+          <GlobeIcon className="text-[#29ED00]" size={24} />
+          <h2 className="text-xl font-bold bg-gradient-to-r from-[#29ED00] to-[#C400ED] bg-clip-text text-transparent">
+            Contact Information
+          </h2>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="space-y-2">
+            <Label htmlFor="phoneNumber" className="text-gray-400">
+              Phone Number
+            </Label>
+            <div className="relative">
+              <Input
+                id="phoneNumber"
+                type="tel"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                className="pl-10 bg-gray-800/50 border-gray-700 focus:border-[#29ED00] focus:ring-1 focus:ring-[#29ED00]"
+                placeholder="+216 XX XXX XXX"
+              />
+              <PhoneIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+            </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="no" id="ctf-no" className="border-[#29ED00]" />
-            <Label htmlFor="ctf-no" className="text-white">No</Label>
+
+          <div className="space-y-2">
+            <Label htmlFor="facebookUrl" className="text-gray-400">
+              Facebook Profile
+            </Label>
+            <div className="relative">
+              <Input
+                id="facebookUrl"
+                type="url"
+                value={facebookUrl}
+                onChange={(e) => setFacebookUrl(e.target.value)}
+                className="pl-10 bg-gray-800/50 border-gray-700 focus:border-[#29ED00] focus:ring-1 focus:ring-[#29ED00]"
+                placeholder="https://facebook.com/username"
+              />
+              <UsersIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+            </div>
           </div>
-        </RadioGroup>
+        </div>
       </div>
-      <div className="space-y-1">
-        <Label className="text-[#29ED00]">
-          <span className="flex items-center gap-2">
-            <UsersIcon size={16} />
-            Do you prefer to participate solo or as a team?
-          </span>
-        </Label>
-        <RadioGroup
-          value={teamPreference}
-          onValueChange={setTeamPreference}
-          className="flex gap-4 pt-2"
-        >
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="solo" id="team-solo" className="border-[#29ED00]" />
-            <Label htmlFor="team-solo" className="text-white">Solo</Label>
+
+      {/* Participation Preferences Section */}
+      <div className="space-y-6 p-6 bg-gray-900/50 rounded-xl border border-[#29ED00]/10">
+        <div className="flex items-center gap-3 mb-4">
+          <ShieldIcon className="text-[#29ED00]" size={24} />
+          <h2 className="text-xl font-bold bg-gradient-to-r from-[#29ED00] to-[#C400ED] bg-clip-text text-transparent">
+            Participation Preferences
+          </h2>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2">
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label className="text-gray-400">CTF Experience</Label>
+              <RadioGroup
+                value={ctfExperience}
+                onValueChange={setCtfExperience}
+                className="flex gap-4"
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem
+                    value="yes"
+                    id="ctf-yes"
+                    className="h-5 w-5 border-gray-600 text-[#29ED00]"
+                  />
+                  <Label htmlFor="ctf-yes" className="text-gray-300">
+                    Yes
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem
+                    value="no"
+                    id="ctf-no"
+                    className="h-5 w-5 border-gray-600 text-[#29ED00]"
+                  />
+                  <Label htmlFor="ctf-no" className="text-gray-300">
+                    No
+                  </Label>
+                </div>
+              </RadioGroup>
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-gray-400">Team Preference</Label>
+              <RadioGroup
+                value={teamPreference}
+                onValueChange={setTeamPreference}
+                className="flex gap-4"
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem
+                    value="solo"
+                    id="team-solo"
+                    className="h-5 w-5 border-gray-600 text-[#29ED00]"
+                  />
+                  <Label htmlFor="team-solo" className="text-gray-300">
+                    Solo
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem
+                    value="team"
+                    id="team-team"
+                    className="h-5 w-5 border-gray-600 text-[#29ED00]"
+                  />
+                  <Label htmlFor="team-team" className="text-gray-300">
+                    Team
+                  </Label>
+                </div>
+              </RadioGroup>
+            </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="team" id="team-team" className="border-[#29ED00]" />
-            <Label htmlFor="team-team" className="text-white">Team</Label>
+
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label className="text-gray-400">Participation Mode</Label>
+              <RadioGroup
+                value={participationMode}
+                onValueChange={setParticipationMode}
+                className="flex flex-col gap-3"
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem
+                    value="online"
+                    id="mode-online"
+                    className="h-5 w-5 border-gray-600 text-[#29ED00]"
+                  />
+                  <Label htmlFor="mode-online" className="text-gray-300">
+                    Online Participation
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem
+                    value="onsite"
+                    id="mode-onsite"
+                    className="h-5 w-5 border-gray-600 text-[#29ED00]"
+                  />
+                  <Label htmlFor="mode-onsite" className="text-gray-300">
+                    On-site Participation
+                  </Label>
+                </div>
+              </RadioGroup>
+            </div>
           </div>
-        </RadioGroup>
+        </div>
       </div>
-      <div className="space-y-1">
-        <Label className="text-[#29ED00]">
-          <span className="flex items-center gap-2">
-            <MonitorIcon size={16} />
-            How would you like to participate?
-          </span>
-        </Label>
-        <RadioGroup
-          value={participationMode}
-          onValueChange={setParticipationMode}
-          className="flex gap-4 pt-2"
-        >
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="online" id="mode-online" className="border-[#29ED00]" />
-            <Label htmlFor="mode-online" className="text-white">Online</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="onsite" id="mode-onsite" className="border-[#29ED00]" />
-            <Label htmlFor="mode-onsite" className="text-white">On-site</Label>
-          </div>
-        </RadioGroup>
-      </div>
-      {message && !existingProfile && (
+
+      {message && (
         <div
-          className={`p-3 rounded text-sm ${
-            message.type === "error" ? "bg-red-900/30 text-red-300" : "bg-green-900/30 text-green-300"
+          className={`p-4 rounded-lg border ${
+            message.type === "error"
+              ? "bg-red-900/20 border-red-500/30 text-red-300"
+              : "bg-green-900/20 border-green-500/30 text-green-300"
           }`}
-          role="alert"
         >
-          {message.text}
+          <div className="flex items-center gap-2">
+            <ShieldIcon className="h-5 w-5" />
+            <span>{message.text}</span>
+          </div>
         </div>
       )}
+
       <Button
         type="submit"
-        disabled={loading || !!existingProfile}
-        className="w-full bg-gradient-to-r from-[#29ED00] to-[#C400ED] hover:opacity-90 text-white font-bold"
-        aria-label={loading ? "Processing..." : "Register for Securinets"}
+        disabled={loading}
+        className="w-full bg-gradient-to-r from-[#29ED00] to-[#C400ED] hover:from-[#29ED00]/90 hover:to-[#C400ED]/90 text-white font-bold py-6 text-lg transition-all duration-300 hover:scale-[1.02]"
       >
         {loading ? (
-          <span className="flex items-center gap-2">
-            <span className="animate Pulse">Processing</span>
-            <span className="inline-block animate-spin">⟳</span>
-          </span>
+          <div className="flex items-center gap-2">
+            <Loader2 className="h-5 w-5 animate-spin" />
+            <span>Processing Registration...</span>
+          </div>
         ) : (
           <span className="flex items-center gap-2">
-            <ShieldIcon size={16} />
-            Register for Securinets
+            <ShieldIcon className="h-5 w-5" />
+            Join Our CTF
           </span>
         )}
       </Button>
-      <div className="text-xs text-gray-500 text-center mt-4">
-        <p>By registering, you agree to join the elite ranks of cybersecurity enthusiasts</p>
-      </div>
+
+      <p className="text-center text-sm text-gray-500">
+        By registering, you agree to our terms and join our cybersecurity community
+      </p>
     </form>
   )
 }

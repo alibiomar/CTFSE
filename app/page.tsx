@@ -1,45 +1,67 @@
 import RegistrationForm from "@/components/registration-form"
 import TerminalEffect from "@/components/terminal-effect"
-import Image from "next/image"
+import GlitchLogo from "@/components/glitch-logo"
+
 export default function Home() {
   return (
-    <main className="min-h-screen bg-black flex flex-col items-center justify-center p-4 sm:p-6">
-      <div className="w-full max-w-lg">
-        <div className="mb-8 text-center">
-          <Image
-            src="/logo.png"
-            alt="Securinets ENIT Logo"
-            width={150}
-            height={150}
-            className="mx-auto mb-4"
-          />
-          <h1 className="text-4xl font-bold mb-2 text-[#29ED00] tracking-tight">
-            <TerminalEffect text="SECURINETS ENIT" />
-          </h1>
-          <p className="text-[#C400ED] text-xl">
-            <TerminalEffect text="Cybersecurity Club" delay={1500} />
-          </p>
-          <div className="mt-4 text-gray-400 text-sm">
-            <TerminalEffect
-              text="// Access granted to registration portal"
-              delay={2500}
+    <main className="min-h-screen bg-black bg-grid-[#29ED00]/10 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
+      <div className="w-full max-w-2xl">
+        <div className="mb-12 text-center space-y-6">
+          <div className="relative group">
+            <GlitchLogo
+              src="/logo.png"
+              alt="Securinets ENIT Logo"
+              width={180}
+              height={180}
+              className="mx-auto mb-4 transition-transform duration-500 repeat-infinite group-hover:scale-110 group-hover:rotate-3"
             />
+            <div className="absolute inset-0 mx-auto w-48 h-48 blur-2xl bg-[#29ED00]/20 -z-10 group-hover:bg-[#C400ED]/30 transition-colors duration-500" />
+          </div>
+
+          <div className="space-y-3">
+            <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#29ED00] to-[#C400ED] tracking-tighter">
+              <TerminalEffect text="SECURINETS ENIT" delay={500} />
+            </h1>
+            <p className="text-2xl text-gray-300 font-mono">
+              <TerminalEffect text="CYBERSECURITY CLUB" delay={2000} />
+            </p>
+            <div className="text-[#29ED00] text-sm font-mono opacity-80">
+              <TerminalEffect
+                text="[root@enit ~]$ ./init_registration_portal.sh"
+                delay={3500}
+                typingSpeed={50}
+              />
+            </div>
           </div>
         </div>
 
-        <div className="relative">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-[#29ED00] to-[#C400ED] rounded-lg blur opacity-75"></div>
-          <div className="relative bg-black border border-gray-800 rounded-lg p-6">
-            <RegistrationForm />
+        <div className="relative group">
+          <div className="absolute -inset-2 bg-gradient-to-r from-[#29ED00] to-[#C400ED] rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-300 animate-pulse" />
+          <div className="relative bg-gradient-to-br from-black to-gray-900 border-2 border-[#29ED00]/20 rounded-2xl p-1 overflow-hidden">
+            <div className="absolute inset-0 bg-[url('/circuit-board.svg')] opacity-10" />
+            <div className="relative bg-gray-900/80 backdrop-blur-sm rounded-xl p-6 lg:p-8">
+              <RegistrationForm />
+            </div>
           </div>
         </div>
 
-        <footer className="mt-6 text-gray-500 text-xs text-center">
-          <p>
-            &lt;encrypted&gt; Securinets ENIT - Defending the digital frontier
-            &lt;/encrypted&gt;
+        <footer className="mt-8 text-center">
+          <p className="text-sm font-mono text-transparent bg-gradient-to-r from-[#29ED00] to-[#C400ED] bg-clip-text animate-pulse">
+            &lt;secure encrypted channel&gt; 
+            <span className="mx-2">▮</span>
+            EST. 2025
+            <span className="mx-2">▮</span>
+            ENIT 
+            <span className="mx-2">▮</span>
+            &lt;/channel&gt;
           </p>
         </footer>
+      </div>
+
+      {/* Animated background elements */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-48 h-48 bg-[#29ED00]/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-[#C400ED]/10 rounded-full blur-3xl animate-pulse delay-1000" />
       </div>
     </main>
   )
