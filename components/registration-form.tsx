@@ -186,7 +186,7 @@ export default function RegistrationForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-8 max-w-2xl mx-auto">
       {/* Personal Information Section */}
-      <div className="space-y-6 p-6 bg-gray-900/50 rounded-xl border border-[#29ED00]/10">
+      <div className="space-y-6 p-6 bg-black rounded-xl border border-[#29ED00]/10">
         <div className="flex items-center gap-3 mb-4">
           <UserIcon className="text-[#29ED00]" size={24} />
           <h2 className="text-xl font-bold bg-gradient-to-r from-[#29ED00] to-[#C400ED] bg-clip-text text-transparent">
@@ -277,7 +277,7 @@ export default function RegistrationForm() {
       </div>
 
       {/* Contact Information Section */}
-      <div className="space-y-6 p-6 bg-gray-900/50 rounded-xl border border-[#29ED00]/10">
+      <div className="space-y-6 p-6 bg-black rounded-xl border border-[#29ED00]/10">
         <div className="flex items-center gap-3 mb-4">
           <GlobeIcon className="text-[#29ED00]" size={24} />
           <h2 className="text-xl font-bold bg-gradient-to-r from-[#29ED00] to-[#C400ED] bg-clip-text text-transparent">
@@ -323,7 +323,7 @@ export default function RegistrationForm() {
       </div>
 
       {/* Participation Preferences Section */}
-      <div className="space-y-6 p-6 bg-gray-900/50 rounded-xl border border-[#29ED00]/10">
+      <div className="space-y-6 p-6 bg-black rounded-xl border border-[#29ED00]/10">
         <div className="flex items-center gap-3 mb-4">
           <ShieldIcon className="text-[#29ED00]" size={24} />
           <h2 className="text-xl font-bold bg-gradient-to-r from-[#29ED00] to-[#C400ED] bg-clip-text text-transparent">
