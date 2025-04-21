@@ -318,7 +318,7 @@ export default function RegistrationForm() {
           value={university}
           onChange={(e) => setUniversity(e.target.value)}
           className="bg-gray-900 border-gray-800 text-white pl-3 focus:border-[#C400ED] focus:ring-[#C400ED]"
-          placeholder="ENIT, INSAT, etc."
+          placeholder="ENIT, INSAT, FST, TEK-UP, etc."
         />
       </div>
       <div className="space-y-1">
