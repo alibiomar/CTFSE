@@ -462,7 +462,7 @@ export default function RegistrationForm() {
       </Button>
 
       <p className="text-center text-sm text-gray-500">
-        By registering, you agree to our terms and join our cybersecurity community
+        By registering, you agree to our terms and join our Securinets community
       </p>
     </form>
   )
