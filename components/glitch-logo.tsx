@@ -49,7 +49,7 @@ export default function GlitchLogo({
         alt={alt}
         width={width}
         height={height}
-        className={`${className} opacity-100`}
+        className={`${className} opacity-90`}
       />
       
       {/* Green color channel */}
@@ -59,10 +59,9 @@ export default function GlitchLogo({
           alt=""
           width={width}
           height={height}
-          className={`${className} brightness-150 contrast-125 saturate-200`}
+          className={`${className}`}
           style={{ 
             transform: `translate(${offsets.greenX}px, ${offsets.greenY}px)`,
-            filter: 'hue-rotate(100deg) brightness(1.5) saturate(2)'
           }}
         />
       </div>
@@ -74,10 +73,9 @@ export default function GlitchLogo({
           alt=""
           width={width}
           height={height}
-          className={`${className} brightness-150 contrast-125 saturate-200`}
+          className={`${className} `}
           style={{ 
             transform: `translate(${offsets.purpleX}px, ${offsets.purpleY}px)`,
-            filter: 'hue-rotate(270deg) brightness(1.2) saturate(2)'
           }}
         />
       </div>

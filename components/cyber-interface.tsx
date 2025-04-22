@@ -389,7 +389,7 @@ export default function CyberInterface() {
   const [ping, setPing] = useState(0);
   // State for gauge animation
   const [gaugeHeight, setGaugeHeight] = useState(cpuUsage);
-
+  const [currentTime, setCurrentTime] = useState("");
   // Simulating loading sequence
   useEffect(() => {
     if (loading) {
@@ -486,7 +486,29 @@ export default function CyberInterface() {
     }, 500),
     [email]
   );
+// Update current time every second in Africa/Tunis
+useEffect(() => {
+  const updateTime = () => {
+    const formatter = new Intl.DateTimeFormat("en-US", {
+      timeZone: "Africa/Tunis",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    });
+    const parts = formatter.formatToParts(new Date());
+    const formatted = `${parts.find((p) => p.type === "year")!.value}-${parts.find((p) => p.type === "month")!.value}-${parts.find((p) => p.type === "day")!.value} ${parts.find((p) => p.type === "hour")!.value}:${parts.find((p) => p.type === "minute")!.value}:${parts.find((p) => p.type === "second")!.value}`;
+    setCurrentTime(formatted);
+  };
 
+  updateTime(); // Initial update
+  const interval = setInterval(updateTime, 1000); // Update every second
+
+  return () => clearInterval(interval);
+}, []);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFormLoading(true);
@@ -630,12 +652,12 @@ export default function CyberInterface() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <div className="w-2 sm:w-3 h-2 sm:h-3 bg-green-500 rounded-full animate-pulse"></div>
-                  <div className="text-green-500 font-mono text-xs sm:text-sm">SECURINETS::CTF_SYSTEM</div>
+                  <div className="text-green-500 font-mono text-[0.65rem] sm:tracking-tight sm:text-sm">SECURINETS::CTF_SYSTEM</div>
                 </div>
                 <div className="flex items-center space-x-2 sm:space-x-3">
-                  <div className="text-green-500 font-mono text-[0.65rem] sm:text-xs">STATUS: ONLINE</div>
-                  <div className="text-green-500 font-mono text-[0.65rem] sm:text-xs">
-                    [{new Date().toISOString().split("T")[0]}]
+                  <div className="text-green-500 font-mono text-[0.55rem] sm:text-xs">STATUS: ONLINE</div>
+                  <div className="text-green-500 font-mono text-[0.55rem] sm:text-xs">
+                  [{currentTime}]
                   </div>
                 </div>
               </div>
@@ -684,8 +706,8 @@ export default function CyberInterface() {
 
             <div className="relative bg-black/80 rounded-b-lg p-2 sm:p-3 border-t border-green-500/30">
               <div className="flex items-center justify-between">
-                <div className="text-green-500/70 font-mono text-[0.65rem] sm:text-xs">CONNECTION SECURE [TLS 1.3]</div>
-                <div className="text-green-500/70 font-mono text-[0.65rem] sm:text-xs flex items-center">
+                <div className="text-green-500/70 font-mono text-[0.55rem] sm:text-xs">CONNECTION SECURE [TLS 1.3]</div>
+                <div className="text-green-500/70 font-mono text-[0.55rem] sm:text-xs flex items-center">
                   <span className="inline-block w-1.5 sm:w-2 h-1.5 sm:h-2 bg-green-500 rounded-full mr-1 sm:mr-2 animate-pulse"></span>
                   ENIT 2025 // SYSTEM ACTIVE
                 </div>
@@ -722,7 +744,7 @@ export default function CyberInterface() {
               <div className="flex items-center space-x-2 sm:space-x-3">
                 <div className="text-green-500 font-mono text-[0.55rem] sm:text-xs">STATUS: ONLINE</div>
                 <div className="text-green-500 font-mono text-[0.55rem] sm:text-xs">
-                  [{new Date().toISOString().split("T")[0]}]
+                [{currentTime}]
                 </div>
               </div>
             </div>
@@ -810,8 +832,8 @@ export default function CyberInterface() {
           {/* Footer bar */}
           <div className="relative bg-black/80 rounded-b-lg p-2 sm:p-3 border-t border-green-500/30">
             <div className="flex items-center justify-between">
-              <div className="text-green-500/70 font-mono text-[0.65rem] sm:text-xs">CONNECTION SECURE [TLS 1.3]</div>
-              <div className="text-green-500/70 font-mono text-[0.65rem] sm:text-xs flex items-center">
+              <div className="text-green-500/70 font-mono text-[0.55rem] sm:text-xs">CONNECTION SECURE [TLS 1.3]</div>
+              <div className="text-green-500/70 font-mono text-[0.55rem] sm:text-xs flex items-center">
                 <span className="inline-block w-1.5 sm:w-2 h-1.5 sm:h-2 bg-green-500 rounded-full mr-1 sm:mr-2 animate-pulse"></span>
                 ENIT 2025 // SYSTEM ACTIVE
               </div>
