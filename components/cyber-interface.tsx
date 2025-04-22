@@ -697,7 +697,7 @@ useEffect(() => {
                     setMessage(null);
                     setEmail("");
                   }}
-                  className="w-full bg-to-green-200 hover:bg-to-green-200/90 transition-transform duration-200 hover:scale-[1.02] text-sm sm:text-base py-2 sm:py-3"
+                  className="w-full bg-[#29ED00] hover:bg-[#29ED00]/70 transition-transform duration-200 hover:scale-[1.02] text-sm sm:text-base py-2 sm:py-3"
                 >
                   Use Different Email
                 </Button>
