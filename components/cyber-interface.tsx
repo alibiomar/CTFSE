@@ -652,11 +652,11 @@ useEffect(() => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <div className="w-2 sm:w-3 h-2 sm:h-3 bg-green-500 rounded-full animate-pulse"></div>
-                  <div className="text-green-500 font-mono text-[0.65rem] sm:tracking-tight sm:text-sm">SECURINETS::CTF_SYSTEM</div>
+                  <div className="text-green-500 font-mono text-[0.55rem] sm:tracking-tight sm:text-sm">SECURINETS::CTF_SYSTEM</div>
                 </div>
                 <div className="flex items-center space-x-2 sm:space-x-3">
-                  <div className="text-green-500 font-mono text-[0.55rem] sm:text-xs">STATUS: ONLINE</div>
-                  <div className="text-green-500 font-mono text-[0.55rem] sm:text-xs">
+                  <div className="text-green-500 font-mono text-[0.5rem] sm:text-xs">STATUS: ONLINE</div>
+                  <div className="text-green-500 font-mono text-[0.5rem] sm:text-xs">
                   [{currentTime}]
                   </div>
                 </div>
@@ -737,13 +737,13 @@ useEffect(() => {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <div className="w-2 sm:w-3 h-2 sm:h-3 bg-green-500 rounded-full animate-pulse"></div>
-                <div className="text-green-500 font-mono text-[0.65rem] sm:tracking-tight sm:text-sm">
+                <div className="text-green-500 font-mono text-[0.55rem] sm:tracking-tight sm:text-sm">
                   SECURINETS::CTF_SYSTEM
                 </div>
               </div>
               <div className="flex items-center space-x-2 sm:space-x-3">
-                <div className="text-green-500 font-mono text-[0.55rem] sm:text-xs">STATUS: ONLINE</div>
-                <div className="text-green-500 font-mono text-[0.55rem] sm:text-xs">
+                <div className="text-green-500 font-mono text-[0.5rem] sm:text-xs">STATUS: ONLINE</div>
+                <div className="text-green-500 font-mono text-[0.5rem] sm:text-xs">
                 [{currentTime}]
                 </div>
               </div>
