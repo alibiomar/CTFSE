@@ -25,20 +25,6 @@ export default function AdminDashboard() {
 
       <DashboardStats />
 
-      <div className="mt-8">
-        <Card className="bg-gray-900 border-gray-800">
-          <CardHeader>
-            <CardTitle className="text-gray-200">Recent Activity</CardTitle>
-            <CardDescription className="text-gray-400">Latest registrations and updates</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="text-center py-8 text-gray-400">
-              <UserCheck className="h-12 w-12 mx-auto mb-4 text-[#29ED00]" />
-              <p>Registration data will appear here as users sign up</p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
 
       <div className="mt-8 flex justify-end">
         <Link href="/admin/export">
