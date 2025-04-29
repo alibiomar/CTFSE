@@ -35,8 +35,6 @@ function RegistrationForm({
   setFullName,
   email,
   setEmail,
-  password,
-  setPassword,
   university,
   setUniversity,
   phoneNumber,
@@ -59,8 +57,6 @@ function RegistrationForm({
   setFullName: (value: string) => void;
   email: string;
   setEmail: (value: string) => void;
-  password: string;
-  setPassword: (value: string) => void;
   university: string;
   setUniversity: (value: string) => void;
   phoneNumber: string;
@@ -132,25 +128,7 @@ function RegistrationForm({
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="password" className="text-gray-400 text-xs sm:text-sm">
-              Password *
-            </Label>
-            <div className="relative">
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-                className="pl-8 sm:pl-10 bg-black border-gray-700 focus:border-[#29ED00] focus:ring-1 focus:ring-[#29ED00] text-sm sm:text-base"
-                placeholder="••••••••••••"
-              />
-              <LockIcon className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4 sm:w-[18px] sm:h-[18px]" />
-            </div>
-            <p className="text-[0.65rem] sm:text-xs text-gray-500">Minimum 6 characters</p>
-          </div>
+
 
           <div className="space-y-2">
             <Label htmlFor="university" className="text-gray-400 text-xs sm:text-sm">
@@ -370,7 +348,6 @@ export default function CyberInterface() {
 
   // Form state
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [facebookUrl, setFacebookUrl] = useState("");
@@ -525,11 +502,8 @@ useEffect(() => {
       setFormLoading(false);
       return;
     }
-    if (!password || password.length < 6) {
-      setMessage({ text: "Password must be at least 6 characters", type: "error" });
-      setFormLoading(false);
-      return;
-    }
+
+    
     if (phoneNumber && !/^\+?\d{8,}$/.test(phoneNumber)) {
       setMessage({ text: "Invalid phone number format", type: "error" });
       setFormLoading(false);
@@ -544,7 +518,6 @@ useEffect(() => {
     try {
       const formData = new FormData();
       formData.append("email", email);
-      formData.append("password", password);
       formData.append("fullName", fullName);
       formData.append("phoneNumber", phoneNumber);
       formData.append("facebookUrl", facebookUrl);
@@ -557,7 +530,7 @@ useEffect(() => {
 
       if (result.success) {
         setMessage({
-          text: result.message || "Registration successful! Check your email.",
+          text: result.message || "Registration successful!",
           type: "success",
         });
 
@@ -570,7 +543,6 @@ useEffect(() => {
 
         // Reset form
         setEmail("");
-        setPassword("");
         setFullName("");
         setPhoneNumber("");
         setFacebookUrl("");
@@ -805,8 +777,6 @@ useEffect(() => {
                     setFullName={setFullName}
                     email={email}
                     setEmail={setEmail}
-                    password={password}
-                    setPassword={setPassword}
                     university={university}
                     setUniversity={setUniversity}
                     phoneNumber={phoneNumber}

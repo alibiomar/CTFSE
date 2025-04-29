@@ -1,4 +1,4 @@
-import { createServerSupabaseClient } from "@/lib/supabase"
+import { createServerSupabaseClient } from "@/lib/supabaseAdmin"
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 import { ReactNode } from "react"
