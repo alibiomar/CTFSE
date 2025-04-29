@@ -1,7 +1,6 @@
 import Link from "next/link"
-import { Users, UserCheck, Download } from "lucide-react"
+import { Users, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import DashboardStats from "@/components/admin/dashboard-stats"
 
 export default function AdminDashboard() {
