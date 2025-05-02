@@ -4,12 +4,8 @@ import CyberInterface from "@/components/cyber-interface";
 
 export default function Home() {
   const [currentTime, setCurrentTime] = useState("");
-  const [isRegistrationOpen, setIsRegistrationOpen] = useState(true);
 
-  // Set a deadline 4 hours from component mount
-  const deadline = new Date();
-  deadline.setHours(deadline.getHours()+3 );
-
+  
   // Update current time every second in Africa/Tunis and check registration status
   useEffect(() => {
     const updateTime = () => {
@@ -27,10 +23,8 @@ export default function Home() {
       const formatted = `${parts.find((p) => p.type === "year")!.value}-${parts.find((p) => p.type === "month")!.value}-${parts.find((p) => p.type === "day")!.value} ${parts.find((p) => p.type === "hour")!.value}:${parts.find((p) => p.type === "minute")!.value}:${parts.find((p) => p.type === "second")!.value}`;
       setCurrentTime(formatted);
 
-      // Check if the deadline has passed
-      if (new Date() >= deadline) {
-        setIsRegistrationOpen(false);
-      }
+
+      
     };
 
     updateTime(); // Initial update
@@ -39,9 +33,8 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  if (isRegistrationOpen) {
-    return <CyberInterface />;
-  }
+
+  
 
   return (
     <main className="min-h-screen bg-black flex flex-col items-center justify-center p-4 sm:p-8">
