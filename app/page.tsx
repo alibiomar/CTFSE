@@ -8,7 +8,7 @@ export default function Home() {
 
   // Set a deadline 4 hours from component mount
   const deadline = new Date();
-  deadline.setHours(deadline.getHours()+4 );
+  deadline.setHours(deadline.getHours()+3 );
 
   // Update current time every second in Africa/Tunis and check registration status
   useEffect(() => {
